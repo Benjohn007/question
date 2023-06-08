@@ -1,0 +1,14 @@
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\bin\Debug\net6.0\FavListUserManagement.Domain.deps.json
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\bin\Debug\net6.0\FavListUserManagement.Domain.dll
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\bin\Debug\net6.0\FavListUserManagement.Domain.pdb
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.csproj.AssemblyReference.cache
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.AssemblyInfoInputs.cache
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.AssemblyInfo.cs
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.dll
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\refint\FavListUserManagement.Domain.dll
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.pdb
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\ref\FavListUserManagement.Domain.dll
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\bin\Debug\net6.0\FavListUserManagement.Domain.runtimeconfig.json
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Domain\obj\Debug\net6.0\FavListUserManagement.Domain.genruntimeconfig.cache

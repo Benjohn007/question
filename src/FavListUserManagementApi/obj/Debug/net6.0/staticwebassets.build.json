@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "gTYrsSAe+OE4sLOF3O5Mg+tH7qzf3UzKd4L6oVeHVrY=",
-  "Source": "FavListUserManagementApi",
-  "BasePath": "_content/FavListUserManagementApi",
+  "Hash": "MwxDZvD74hiF01robl2qv3UvdI/oLOunXxocKTRJOwg=",
+  "Source": "FavListUserManagement.Api",
+  "BasePath": "_content/FavListUserManagement.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

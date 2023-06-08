@@ -1,6 +1,6 @@
 ﻿namespace FavListUserManagement.Domain.Entities
 {
-    public class Catergory
+    public class Catergory : BaseEntity
     {
     }
 }
