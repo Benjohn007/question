@@ -1,4 +1,4 @@
-﻿using FavListUserManagement.Domain.Entities;
+﻿using FavListUserManagement.Domain.DTO;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,6 @@ namespace FavListUserManagement.Application.IServices
 {
     public interface ICreateAccountService
     {
-        Task<IdentityResult> SignUpAsync(SignUp signUp);
+        Task<IdentityResult> SignUpAsync(RegisterDto signUp);
     }
 }

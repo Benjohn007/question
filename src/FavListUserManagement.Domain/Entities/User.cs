@@ -9,7 +9,7 @@ namespace FavListUserManagement.Domain.Entities
 {
     public class User : IdentityUser 
     {
-        public virtual Guid Id { get; set; }
+        //public virtual Guid Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime Created_Date { get; set; }
@@ -17,5 +17,7 @@ namespace FavListUserManagement.Domain.Entities
         public bool Is_Deleted { get; set; } = false;
         public UserRole? Roles_id { get; set; }
         public DateTime Last_Modified { get; set; }
+        public string? Refreshtoken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

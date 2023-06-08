@@ -19,32 +19,192 @@ namespace FavListUserManagement.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Roles", b =>
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Catergory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<Guid>("Create_by_id")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Created_By_Id")
+                        .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Create_date")
+                    b.Property<DateTime>("Created_Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("Is_Admin")
+                    b.Property<bool>("Is_Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("RoleName")
-                        .IsRequired()
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modified_By")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Catergories");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Catergory_IdId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Created_By_Id")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modified_By")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Screen_Path")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Catergory_IdId");
+
+                    b.ToTable("PortalFeatures");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.QuestionDefaultParameter", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Created_By_Id")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Days_to_remain_open")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Max_answer_count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Min_answer_count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Modified_By")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestionDefaultParameters");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.RoleFeature", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("CanCreate")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanUpdate")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("CanView")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Created_By_Id")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modified_By")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PortalFeatures_IdId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Roles_IdId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PortalFeatures_IdId");
+
+                    b.HasIndex("Roles_IdId");
+
+                    b.ToTable("RoleFeatures");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.User", b =>
@@ -59,7 +219,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Creat_date")
+                    b.Property<DateTime>("Created_Date")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
@@ -107,8 +267,15 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid?>("Roles_idId")
-                        .HasColumnType("char(36)");
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Refreshtoken")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Roles_idId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
@@ -132,6 +299,53 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.HasIndex("Roles_idId");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Created_By_Id")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Admin")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modified_By")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Roles")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -262,9 +476,33 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
+                {
+                    b.HasOne("FavListUserManagement.Domain.Entities.Catergory", "Catergory_Id")
+                        .WithMany()
+                        .HasForeignKey("Catergory_IdId");
+
+                    b.Navigation("Catergory_Id");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.RoleFeature", b =>
+                {
+                    b.HasOne("FavListUserManagement.Domain.Entities.PortalFeature", "PortalFeatures_Id")
+                        .WithMany()
+                        .HasForeignKey("PortalFeatures_IdId");
+
+                    b.HasOne("FavListUserManagement.Domain.Entities.UserRole", "Roles_Id")
+                        .WithMany()
+                        .HasForeignKey("Roles_IdId");
+
+                    b.Navigation("PortalFeatures_Id");
+
+                    b.Navigation("Roles_Id");
+                });
+
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.User", b =>
                 {
-                    b.HasOne("FavListUserManagement.Domain.Entities.Roles", "Roles_id")
+                    b.HasOne("FavListUserManagement.Domain.Entities.UserRole", "Roles_id")
                         .WithMany()
                         .HasForeignKey("Roles_idId");
 

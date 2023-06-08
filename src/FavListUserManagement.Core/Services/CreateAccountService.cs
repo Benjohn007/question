@@ -1,4 +1,5 @@
 ﻿using FavListUserManagement.Application.IServices;
+using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ namespace FavListUserManagement.Application.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IdentityResult> SignUpAsync(SignUp signUp)
+        public async Task<IdentityResult> SignUpAsync(RegisterDto signUp)
         {
             try
             {

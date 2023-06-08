@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FavListUserManagement.Application.Utilities
 {
-    internal interface ITokenDetails
+    public interface ITokenDetails
     {
         string GetId();
         string GetUserName();

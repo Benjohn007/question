@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "DbxTSBM39hHCN8TBJ6jq6d0K4ZxJVtIM2Ovf2QfpCn2SgV6nhP/4hw1erh1eoUR3Qb83HWlAIEX3Ft8xlRJTcw==",
+  "dgSpecHash": "E0+b2FNEB5Y4rIFICvRTgp8Sa0hP6sphqP2wDRIwqJo1RoyIGXksOidrOv3T857HreekpeKnnm+QuU7Nt7AH8g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Deca\\source\\repos\\favlist-ps-user-management-service\\src\\FavListUserManagement.Core\\FavListUserManagement.Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Deca\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Deca\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Deca\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Deca\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.16\\microsoft.aspnetcore.cryptography.internal.6.0.16.nupkg.sha512",

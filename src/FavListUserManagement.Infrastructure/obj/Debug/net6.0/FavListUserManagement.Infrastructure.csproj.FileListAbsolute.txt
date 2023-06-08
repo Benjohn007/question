@@ -1,4 +1,5 @@
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Infrastructure.deps.json
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Infrastructure.runtimeconfig.json
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Infrastructure.dll
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Infrastructure.pdb
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Domain.dll
@@ -12,6 +13,5 @@ C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserMan
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\FavListUserManagement.Infrastructure.dll
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\refint\FavListUserManagement.Infrastructure.dll
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\FavListUserManagement.Infrastructure.pdb
-C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\ref\FavListUserManagement.Infrastructure.dll
-C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\bin\Debug\net6.0\FavListUserManagement.Infrastructure.runtimeconfig.json
 C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\FavListUserManagement.Infrastructure.genruntimeconfig.cache
+C:\Users\Deca\source\repos\favlist-ps-user-management-service\src\FavListUserManagement.Infrastructure\obj\Debug\net6.0\ref\FavListUserManagement.Infrastructure.dll

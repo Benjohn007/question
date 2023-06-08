@@ -1,5 +1,6 @@
 using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Application.Services;
+using FavListUserManagement.Application.Utilities;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.DbContext;
@@ -28,6 +29,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ICreateAccountService, CreateAccountService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenDetails, TokenDetails>();  
+builder.Services.AddScoped<IAuthenticationRepositotry, AuthenticationRepository>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
        .AddEntityFrameworkStores<ApplicationDbContext>()

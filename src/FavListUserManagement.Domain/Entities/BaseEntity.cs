@@ -12,7 +12,7 @@ namespace FavListUserManagement.Domain.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public virtual Guid Id { get; set; }
+        public virtual string Id { get; set; }
         public string? Created_By_Id { get; set; }
         public string? Modified_By { get; set; }
         public virtual DateTime Created_Date { get; set; } = DateTime.Now;
