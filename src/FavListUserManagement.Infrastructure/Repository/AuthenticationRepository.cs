@@ -137,7 +137,7 @@ namespace FavListUserManagement.Infrastructure.Repository
 
                 var result = await _userManager.CreateAsync(newUser, user.Password);
 
-                if (result.Succeeded) await _userManager.AddToRoleAsync(newUser, "AppUser");
+                if (result.Succeeded) await _userManager.AddToRoleAsync(newUser, UserRole.AppUser.ToString());
 
                 return result.Succeeded;
             }

@@ -9,6 +9,6 @@ namespace FavListUserManagement.Domain.DTO
 {
     public class RoleDto
     {
-        public UserRole RoleName { get; set; }
+        public UserRole? RoleName { get; set; }
     }
 }

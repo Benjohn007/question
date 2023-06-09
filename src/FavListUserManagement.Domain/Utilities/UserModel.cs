@@ -8,8 +8,8 @@ namespace FavListUserManagement.Application.Utilities
 {
     public class UserModel
     {
-        public string Id { get; set; }
-        public string UserName { get; set; }
+        public string Id { get; set; } = "";
+        public string UserName { get; set; } = "";
         public string Role { get; set; } = "";
     }
 }

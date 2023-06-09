@@ -48,7 +48,7 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
     {
         private readonly ApplicationDbContext _applicationDb;
         private bool _disposed;
-        private IAdminRepository _adminRepository;
+        //private IAdminRepository? _adminRepository;
         public UnitOfWork(ApplicationDbContext applicationDb)
         {
             _applicationDb = applicationDb;
@@ -69,9 +69,9 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         }
 
 
-        public void SaveChanges()
+        public async void SaveChanges()
         {
-            _applicationDb.SaveChangesAsync();
+           await _applicationDb.SaveChangesAsync();
         }
 
         public void Rollback()

@@ -259,7 +259,7 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
 
         public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
-        public async Task DeleteAsync<T>(T Value)
+        public async Task DeleteAsync(T Value)
         {
             var entity = await _dbSet.FindAsync(Value);
             EntityEntry entityEntry = _dbSet.Remove(entity);
@@ -298,7 +298,7 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
         }
 
 
-        public async Task UpdateAsync<T>(T Value, T entity)
+        public async Task UpdateAsync(T Value, T entity)
         {
             var entityUpdate = await _dbSet.FindAsync(Value);
             EntityEntry entityEntry = _dbSet.Update(entityUpdate);

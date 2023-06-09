@@ -8,9 +8,9 @@ namespace FavListUserManagement.Domain.Entities
 {
     public class Response<T>
     {
-        public T Data { get; set; }
+        public T? Data { get; set; }
         public bool Succeeded { get; set; }
-        public string Message { get; set; }
+        public string? Message { get; set; }
         public int StatusCode { get; set; }
 
         public Response(int statusCode, bool success, string msg, T data)

@@ -27,7 +27,7 @@ namespace FavListUserManagement.Infrastructure.Repository
             {
                 IdentityRole identityRole = new IdentityRole
                 {
-                    Name = ((UserRole)role.RoleName).ToString(),
+                    Name = role.RoleName.ToString(),
                 };
                 var result = await _roleManager.CreateAsync(identityRole);
 

@@ -8,7 +8,7 @@ namespace FavListUserManagement.Application.Utilities
 {
     public class RefreshToken
     {
-        public string Refreshtoken { get; set; }
+        public string? Refreshtoken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

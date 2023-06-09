@@ -72,6 +72,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+await CreateRoleAsync(app);
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -86,3 +89,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run(); 
+async Task CreateRoleAsync(IApplicationBuilder app)
+{
+    var scope = app.ApplicationServices.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var userRoles = context.Roles;
+    if (!userRoles.Any())
+    {
+        await roleManager.CreateAsync(new IdentityRole { Name = UserRole.SuperAdmin.ToString() });
+        await roleManager.CreateAsync(new IdentityRole { Name = UserRole.Admin.ToString() });
+        await roleManager.CreateAsync(new IdentityRole { Name = UserRole.AppUser.ToString() });
+    }
+}

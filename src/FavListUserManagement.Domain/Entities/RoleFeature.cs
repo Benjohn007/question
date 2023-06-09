@@ -8,7 +8,7 @@ namespace FavListUserManagement.Domain.Entities
 {
     public class RoleFeature: BaseEntity
     {
-        public UserRole? Roles_Id { get; set; }
+        //public UserRole? Roles_Id { get; set; }
         public PortalFeature? PortalFeatures_Id { get; set; }
         public bool CanCreate { get; set; }
         public bool CanDelete { get; set; }

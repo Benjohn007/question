@@ -9,8 +9,8 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
         Task<T> GetByIdAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true);
         Task AddAsync(T entity);
-        Task UpdateAsync<T>(T Value, T entity);
-        Task DeleteAsync<T>(T Value);
+        Task UpdateAsync(T Value, T entity);
+        Task DeleteAsync(T Value);
     }
     
 }

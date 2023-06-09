@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace FavListUserManagement.Domain.Entities
 {
-    public class UserRole : BaseEntity
-    {
-        public string? RoleName { get; set; }
-        public string? Description { get; set; }
-        public bool Is_Admin { get; set; }
-        public Roles Roles { get; set; }
-    }
+    //public class UserRole : BaseEntity
+    //{
+    //    public string RoleName { get; set; } = string.Empty;
+    //    public string Description { get; set; } = string.Empty;
+    //    public bool Is_Admin { get; set; }
+    //    public Roles Roles { get; set; }
+    //}
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum Roles
+    public enum UserRole
     {
-        SuperAdmin = 0,
-        Admin = 1,
-        AppUser = 3,
+        SuperAdmin,
+        Admin,
+        AppUser
     }
 }
