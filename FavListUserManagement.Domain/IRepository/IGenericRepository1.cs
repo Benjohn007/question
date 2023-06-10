@@ -7,10 +7,10 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null);
-        Task<T> GetByIdAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true);
+        Task<T?> GetByIdAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true);
         Task AddAsync(T entity);
-        Task UpdateAsync(T Value, T entity);
-        Task DeleteAsync(T Value);
+        Task<bool> UpdateAsync(T Value, T entity);
+        Task<bool> DeleteAsync(T Value);
     }
     
 }

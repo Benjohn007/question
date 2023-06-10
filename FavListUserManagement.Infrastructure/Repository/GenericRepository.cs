@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace FavListUserManagement.Infrastructure.GenericRepository
 {
@@ -259,11 +260,16 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
 
         public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
 
-        public async Task DeleteAsync(T Value)
+        public async Task<bool> DeleteAsync(T Value)
         {
             var entity = await _dbSet.FindAsync(Value);
+            if(entity == null)
+            {
+                return false;
+            }
             EntityEntry entityEntry = _dbSet.Remove(entity);
             entityEntry.State = EntityState.Deleted;
+            return true;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
@@ -281,9 +287,9 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
         }
 
 
-        public async Task<T> GetByIdAsync(string id, T Value) => await _dbSet.FindAsync(Value);
+        //public async Task<T> GetByIdAsync(string id, T value) => await _dbSet.FindAsync(value);
 
-        public async Task<T> GetByIdAsync(Expression<Func<T, bool>>? filter = null, bool tracked = true)
+        public async Task<T?> GetByIdAsync(Expression<Func<T, bool>>? filter, bool tracked = true)
         {
             IQueryable<T> query = _dbSet;
             if (!tracked)
@@ -294,15 +300,20 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
             {
                 query = query.Where(filter);
             }
-            return await query.FirstOrDefaultAsync();
+            return query == null ? null : await query.FirstOrDefaultAsync();
         }
 
 
-        public async Task UpdateAsync(T Value, T entity)
+        public async Task<bool> UpdateAsync(T Value, T entity)
         {
             var entityUpdate = await _dbSet.FindAsync(Value);
+            if (entityUpdate == null)
+            {
+                return false;
+            }
             EntityEntry entityEntry = _dbSet.Update(entityUpdate);
             entityEntry.State = EntityState.Modified;
+            return true;
         }
     }
 }
