@@ -10,14 +10,14 @@ namespace FavListUserManagement.Infrastructure.DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         //public DbSet<UserRole>? Roles { get; set; } 
         public DbSet<RoleFeature>? RoleFeatures { get; set; }
         public DbSet<PortalFeature>? PortalFeatures { get; set; }
         public DbSet<QuestionDefaultParameter>? QuestionDefaultParameters { get; set; }
-        public DbSet<Catergory>? Catergories { get; set;}
+        public DbSet<Catergory>? Catergories { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -40,6 +40,30 @@ namespace FavListUserManagement.Infrastructure.DbContext
                 }
             }
             return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void DeleteUser()
+        {
+            var entities = ChangeTracker.Entries()
+                                .Where(e => e.State == EntityState.Deleted);
+            foreach (var entity in entities)
+            {
+                if (entity.Entity is User)
+                {
+                    entity.State = EntityState.Modified;
+                    var user = entity.Entity as User;
+                    if (user != null)
+                    {
+                        user.Is_Deleted = true;
+                    }
+                }
+            }
+        }
+
+        public override int SaveChanges()
+        {
+            DeleteUser();
+            return base.SaveChanges();
         }
     }
 }

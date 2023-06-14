@@ -2,6 +2,8 @@
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
+using FavListUserManagement.Infrastructure.GenericRepository;
+using FavListUserManagement.Infrastructure.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +17,12 @@ namespace FavListUserManagement.Application.Services
 
     {
         private readonly IAdminRepository _adminRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AdminService(IAdminRepository adminRepository)
+        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork)
         {
             _adminRepository = adminRepository;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Response<string>> AddUserRole(string userId, UserRole role)
         {
@@ -73,5 +77,57 @@ namespace FavListUserManagement.Application.Services
             response.Message = "Role removed successfully";
             return response;
         }
+
+        public async Task<Response<User>> RemoveUser(string userId)
+        {
+            try
+            {
+                var result = await _adminRepository.RemoveUserById(userId);
+                if (!result)
+                {
+                    return new Response<User>
+                    {
+                        Succeeded = false,
+                        StatusCode = (int)HttpStatusCode.NotFound,
+                        Message = "User not found"
+                    };
+                }
+                return new Response<User>
+                {
+                    Succeeded = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = "Successful"
+                };
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        public async Task<Response<User>> GetUserById(string userId)
+        {
+            var result = await _unitOfWork.userManagementRepository.GetByIdAsync(x => x.Id == userId);
+            if (result == null)
+            {
+                return new Response<User> 
+                { 
+                    Succeeded = false,
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "user not found"
+                };
+            }
+            return new Response<User>
+            {
+                Succeeded = true,
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = result.ToString()
+            };
+
+        }
+
     }
 }
+

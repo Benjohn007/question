@@ -11,14 +11,14 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        //    IBookingRepository bookingRepository { get; }
+        IUserManagementRepository userManagementRepository { get; }
 
-            void SaveChanges();
+        void SaveChanges();
 
-            void BeginTransaction();
+        void BeginTransaction();
 
-            void Rollback();
-            Task SaveChangesAsync();
+        void Rollback();
+        Task SaveChangesAsync();
         
     }
 }

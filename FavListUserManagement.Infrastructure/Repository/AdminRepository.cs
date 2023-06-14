@@ -20,6 +20,12 @@ namespace FavListUserManagement.Infrastructure.Repository
             _roleManager = roleManager;
             _userManager = userManager;
         }
+        /* LIST OF EENDPOINT STILL TO BE CREATED
+         * GET-ALL-USER
+         * GET-USER-BY-ID
+         * UPDATE-USER
+         * DELETE-USER
+         */
 
         public async Task<bool> CreateRole(RoleDto role)
         {
@@ -80,6 +86,38 @@ namespace FavListUserManagement.Infrastructure.Repository
                 throw new Exception(ex.Message);
             }
            
+        }
+
+        public async Task<bool> RemoveUserById(string userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if(user == null) return false;
+                 var result = await _userManager.DeleteAsync(user);
+                return result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<bool> GetUserById(string userId)
+        {
+            try
+            {
+               var user = await _userManager.FindByIdAsync(userId);
+                if (user == null) return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
     }
