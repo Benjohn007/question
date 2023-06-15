@@ -2,7 +2,6 @@
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,36 +116,8 @@ namespace FavListUserManagement.Infrastructure.Repository
             catch (Exception ex)
             {
 
-                throw new Exception(ex.Message);
-            }
-        }
-
-        //public async Task<User> GetAllUser()
-        //{
-        //    try
-        //    {
-        //       await _userManager.Users.ToListAsync();
-        //        return null;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-        public async Task<User?> UpdateUser(User user)
-        {
-            try
-            {
-                await _userManager.UpdateAsync(user);
-                return user;
-            }
-            catch (Exception)
-            {
-
                 throw;
             }
-           
         }
 
     }

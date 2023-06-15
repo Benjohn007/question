@@ -68,18 +68,6 @@ namespace FavListUserManagement.Api.Controllers
             }
         
         }
-        //[HttpGet("Get-all-User")]
-        //public async Task<IActionResult> GetAllUser()
-        //{
-        //    try
-        //    {
-        //        return Ok(await _adminService.GetAll());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.Message);
-        //    }
-        //}
 
         [HttpGet("Get-User-By-Id")]
         public async Task<IActionResult> GetUserById(string userId)
@@ -89,27 +77,6 @@ namespace FavListUserManagement.Api.Controllers
                 var user = await _adminService.GetUserById(userId);
                 if (user.Succeeded) return Ok(user);
                 return BadRequest(user);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
-        }
-        [HttpPut("Update-User")]
-        public async Task<IActionResult> UpdateUser(string userId, [FromBody] User update)
-        {
-            try
-            {
-                var user = await _adminService.GetUserById(userId);
-                if (user == null)
-                {
-                    //log error
-                    ModelState.AddModelError("ErrorMessage", "Amenity ID is Invalid");
-                    return BadRequest(ModelState);
-                }
-                var updateUser = await _adminService.UpdateUser(userId, update);
-                return Ok(updateUser);
             }
             catch (Exception ex)
             {

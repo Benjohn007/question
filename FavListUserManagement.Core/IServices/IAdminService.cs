@@ -15,7 +15,5 @@ namespace FavListUserManagement.Application.IServices
         Task<Response<string>> RemoveUserRole(string userId, UserRole role);
         Task<Response<User>> GetUserById(string userId);
         Task<Response<User>> RemoveUser(string userId);
-        Task<Response<User>> UpdateUser(string userId, User updateDto);
-        //Task<Response<User>> GetAll();
     }
 }
