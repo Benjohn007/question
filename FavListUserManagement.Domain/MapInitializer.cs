@@ -17,6 +17,9 @@ namespace FavListUserManagement.Application
         {
             var regConfig = new MapperConfiguration(conf => conf.CreateMap<RegisterDto, User>());
             regMapper = new Mapper(regConfig);
+
+            CreateMap<User, UpdateUserDto>();
+
         }
 
     }
