@@ -1,3 +1,4 @@
+using FavListUserManagement.Application;
 using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Application.Services;
 using FavListUserManagement.Application.Utilities;
@@ -6,9 +7,12 @@ using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.DbContext;
 using FavListUserManagement.Infrastructure.Repository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +41,7 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddIdentity<User, IdentityRole>()
        .AddEntityFrameworkStores<ApplicationDbContext>()
        .AddDefaultTokenProviders();
+builder.Services.AddAutoMapper(typeof(MapInitializer));
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
