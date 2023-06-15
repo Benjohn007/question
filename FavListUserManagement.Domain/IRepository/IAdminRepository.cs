@@ -13,6 +13,7 @@ namespace FavListUserManagement.Domain.IRepository
         Task<bool> CreateRole(RoleDto role);
         Task<bool> AddUserRole(string userId, UserRole role);
         Task<bool> RemoveUserRole(string userId, UserRole role);
-        
+        Task<bool> RemoveUserById(string userId);
+        Task<bool> GetUserById(string userId);
     }
 }

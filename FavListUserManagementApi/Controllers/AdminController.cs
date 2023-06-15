@@ -1,6 +1,7 @@
 ﻿using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,7 @@ namespace FavListUserManagement.Api.Controllers
             _adminService = adminService;
         }
 
+        [Authorize(Roles = "SuperAdmin")]
         [HttpPost("Create-role")]
         public async Task<IActionResult> CreateRole(RoleDto role)
         {
@@ -50,7 +52,6 @@ namespace FavListUserManagement.Api.Controllers
             }
          
         }
-
         [HttpPost("Remove-user-role/{userId}")]
         public async Task<IActionResult> RemoveUserRole(string userId, UserRole roles)
         {
@@ -66,6 +67,38 @@ namespace FavListUserManagement.Api.Controllers
                 throw new Exception(ex.Message);
             }
         
+        }
+
+        [HttpGet("Get-User-By-Id")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            try
+            {
+                var user = await _adminService.GetUserById(userId);
+                if (user.Succeeded) return Ok(user);
+                return BadRequest(user);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpDelete("Remove-User")]
+        public async Task<IActionResult> RemoveUser(string userId)
+        {
+            try
+            {
+                var user = await _adminService.RemoveUser(userId);
+                if (user.Succeeded) return Ok(user);
+                return BadRequest(user);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
