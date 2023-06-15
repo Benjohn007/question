@@ -132,14 +132,6 @@ namespace FavListUserManagement.Infrastructure.Repository
         {
             try
             {
-                var response = new Response<string>();
-                var userExist = await _userManager.FindByEmailAsync(user.Email);
-                if (userExist != null)
-                {
-                    response.Succeeded = false; 
-                    response.StatusCode = 403;
-                    response.Message = "User already exist";  
-                }
                 var mapInitializer = new MapInitializer();
                 var newUser = mapInitializer.regMapper.Map<RegisterDto, User>(user);
 

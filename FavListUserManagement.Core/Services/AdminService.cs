@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FavListUserManagement.Application.IServices;
+﻿using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
@@ -19,13 +18,11 @@ namespace FavListUserManagement.Application.Services
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork,IMapper mapper)
+        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork)
         {
             _adminRepository = adminRepository;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
         public async Task<Response<string>> AddUserRole(string userId, UserRole role)
         {
@@ -126,49 +123,8 @@ namespace FavListUserManagement.Application.Services
             {
                 Succeeded = true,
                 StatusCode = (int)HttpStatusCode.OK,
-                Message = $"Username:{result.UserName}, FullName:{result.FirstName} {result.LastName}, Email:{result.Email}"
+                Message = result.ToString()
             };
-
-        }
-        //public async Task<Response<User>> GetAll()
-        //{
-        //    var user = await _adminRepository.GetAllUser();
-        //    return user.ToString();
-        //    //if(user)
-        //    //{
-        //    //    return new Response<User>
-        //    //    {
-
-        //    //        Message = user
-        //    //    };
-        //    //}
-        //    //return new Response<User> { Succeeded = false, };
-
-        //}
-        public async Task<Response<User>> UpdateUser(string userId, User? updateDto)
-        {
-            var response = new Response<User>();
-
-            if (updateDto == null || userId != updateDto.Id)
-            {
-                response.StatusCode = (int)HttpStatusCode.BadRequest;
-                Response<UpdateUserDto>.Fail("unsuccessful", 400);
-
-            }
-           // User model = _mapper.Map<User>(updateDto);
-
-            var user = await _adminRepository.UpdateUser(updateDto!);
-            if(user != null)
-            {
-                return new Response<User>
-                {
-                    Succeeded = true,
-                    StatusCode = (int)HttpStatusCode.OK,
-                    Message = user.ToString()
-                };
-
-            }
-            return new Response<User> { Succeeded = false, };
 
         }
 

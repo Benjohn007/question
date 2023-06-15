@@ -15,7 +15,5 @@ namespace FavListUserManagement.Domain.IRepository
         Task<bool> RemoveUserRole(string userId, UserRole role);
         Task<bool> RemoveUserById(string userId);
         Task<bool> GetUserById(string userId);
-        //Task<User> GetAllUser();
-        Task<User?> UpdateUser(User user);
     }
 }

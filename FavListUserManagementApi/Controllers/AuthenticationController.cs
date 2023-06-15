@@ -50,6 +50,7 @@ namespace FavListUserManagement.Api.Controllers
             }
           
         }
+        [Authorize]
         [HttpGet("Refresh-Token")]
         public async Task<IActionResult> RefreshToken()
         {
