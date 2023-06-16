@@ -1,11 +1,16 @@
 ﻿using FavListUserManagement.Application;
+using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Application.Utilities;
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+
+//using Org.BouncyCastle.Asn1.Ocsp;
+//using System.ComponentModel.DataAnnotations;
 using System.Net;
+//using System.Security.Policy;
 
 namespace FavListUserManagement.Infrastructure.Repository
 {
@@ -15,13 +20,15 @@ namespace FavListUserManagement.Infrastructure.Repository
         private readonly ITokenService _token;
         private readonly ITokenDetails _tokenDetails;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IEmailServices _emailService;
 
-        public AuthenticationRepository(UserManager<User> userManager, ITokenService token, ITokenDetails tokenDetails, IHttpContextAccessor httpContext)
+        public AuthenticationRepository(UserManager<User> userManager, ITokenService token, ITokenDetails tokenDetails, IHttpContextAccessor httpContext,IEmailServices emailService)
         {
             _userManager = userManager;
             _token = token;
             _tokenDetails = tokenDetails;
             _httpContext = httpContext;
+            _emailService = emailService;
         }
 
         public async Task<Response<string>> Login(LoginDto model)
@@ -156,5 +163,29 @@ namespace FavListUserManagement.Infrastructure.Repository
             }
             
         }
+
+        //public async Task<Response<string>> ForgotPassword(string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user != null)
+        //    {
+        //        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //        var forgetPasswordLink = Url.Action(nameof(ResetPassword), "Authentication", new { token, email = user.Email }, Request.Scheme);
+        //        var message = new Message(new List<string> { user.Email! }, "Reset Password link", forgetPasswordLink!);
+        //        _emailService.SendEmail(message);
+
+        //        return new Response { Status = "Success", Mesaage = $"Password change request has been sent to your email {user.Email}. please open your email and clink the link" });
+        //    }
+        //    return   new Response { Status = "Error", Mesaage = $"Could not send link to email. please try again" });
+        //}
+
+        //public async Task<ResetPassword> ResetPassword(string token, string email)
+        //{
+        //    var model = new ResetPassword { Token = token, Email = email };
+
+        //    return  model;
+
+        //}
+
     }
 }
