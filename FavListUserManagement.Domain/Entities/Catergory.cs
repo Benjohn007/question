@@ -2,5 +2,6 @@
 {
     public class Catergory : BaseEntity
     {
+        public String? Name { get; set; }
     }
 }

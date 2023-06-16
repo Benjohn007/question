@@ -18,6 +18,9 @@ namespace FavListUserManagement.Infrastructure.DbContext
         public DbSet<PortalFeature>? PortalFeatures { get; set; }
         public DbSet<QuestionDefaultParameter>? QuestionDefaultParameters { get; set; }
         public DbSet<Catergory>? Catergories { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Sponsor> Sponsors { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
