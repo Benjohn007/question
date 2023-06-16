@@ -116,7 +116,7 @@ namespace FavListUserManagement.Infrastructure.Repository
             catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
