@@ -84,5 +84,10 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
             entityEntry.State = EntityState.Modified;
             return true;
         }
+
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+        }
     }
 }

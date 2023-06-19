@@ -9,16 +9,19 @@ using System.Threading.Tasks;
 
 namespace FavListUserManagement.Infrastructure.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         IUserManagementRepository userManagementRepository { get; }
+        IQuestionRepository questionRepository { get; }
+        ICategoryRepository catergoryRepository { get; }
+        IAnswerRepository answerRepository { get; }
 
-        void SaveChanges();
+        Task SaveChanges();
 
         void BeginTransaction();
 
         void Rollback();
-        Task SaveChangesAsync();
+       // Task SaveChangesAsync();
         
     }
 }

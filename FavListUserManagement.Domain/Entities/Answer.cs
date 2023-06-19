@@ -11,5 +11,7 @@ namespace FavListUserManagement.Domain.Entities
         public string? Text { get; set; }
         public int Vote_Count { get; set; }
         public int Weight { get; set; }
+        public Question? Question { get; set; }
+        public string? QuestionId { get; set; }
     }
 }

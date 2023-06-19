@@ -13,11 +13,15 @@ using System.Threading.Tasks;
 namespace FavListUserManagement.Infrastructure.UnitOfWork
 {
 
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApplicationDbContext _applicationDb;
         private bool _disposed;
         private IUserManagementRepository? _userManagementRepository;
+        private IQuestionRepository? _questionRepository;
+        private ICategoryRepository? _catergoryRepository;
+        private IAnswerRepository? _answerRepository;
+        private ISponsorRepository? _sponsorRepository;
 
         public UnitOfWork(ApplicationDbContext applicationDb)
         {
@@ -28,13 +32,23 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         public IUserManagementRepository userManagementRepository =>
             _userManagementRepository ??= new UserManagementRepository(_applicationDb);
 
+        public IQuestionRepository questionRepository =>
+            _questionRepository ??= new QuestionRepository(_applicationDb);
+        public ICategoryRepository catergoryRepository =>
+            _catergoryRepository ??= new CategoryRepository(_applicationDb);
+        public IAnswerRepository answerRepository => 
+            _answerRepository ??= new AnswerRepository(_applicationDb);
+        public ISponsorRepository sponsorRepository =>
+            _sponsorRepository ??= new SponsorRepository(_applicationDb);
+
+
         public void BeginTransaction()
         {
             _disposed = false;
         }
 
 
-        public async void SaveChanges()
+        public async Task SaveChanges()
         {
            await _applicationDb.SaveChangesAsync();
         }
@@ -45,7 +59,7 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         }
 
 
-        protected virtual void Dispose(bool disposing)
+        /*protected virtual void Dispose(bool disposing)
         {
 
             if (!_disposed)
@@ -57,18 +71,18 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
             }
 
             _disposed = true;
-        }
+        }*/
 
         public void Dispose()
         {
-            Dispose(true);
+            _applicationDb.Dispose();
             GC.SuppressFinalize(this);
         }
 
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }
+        //public Task SaveChangesAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 
 }

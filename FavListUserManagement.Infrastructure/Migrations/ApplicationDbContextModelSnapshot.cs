@@ -48,6 +48,9 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Text")
                         .HasColumnType("longtext");
 
@@ -62,7 +65,9 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Answers");
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.Catergory", b =>
@@ -102,7 +107,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Catergories");
+                    b.ToTable("Catergorys", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
@@ -156,7 +161,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasIndex("Catergory_IdId");
 
-                    b.ToTable("PortalFeatures");
+                    b.ToTable("PortalFeatures", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.Question", b =>
@@ -164,9 +169,6 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Answer")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("CatergoryId")
                         .HasColumnType("varchar(255)");
@@ -210,7 +212,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("SponsorId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Text")
                         .HasColumnType("longtext");
@@ -225,9 +227,11 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasIndex("CatergoryId");
 
+                    b.HasIndex("SponsorId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.QuestionDefaultParameter", b =>
@@ -273,7 +277,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QuestionDefaultParameters");
+                    b.ToTable("QuestionDefaultParameters", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.RoleFeature", b =>
@@ -327,7 +331,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasIndex("PortalFeatures_IdId");
 
-                    b.ToTable("RoleFeatures");
+                    b.ToTable("RoleFeatures", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.Sponsor", b =>
@@ -373,7 +377,7 @@ namespace FavListUserManagement.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sponsors");
+                    b.ToTable("Sponsors", (string)null);
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.User", b =>
@@ -593,6 +597,15 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Answer", b =>
+                {
+                    b.HasOne("FavListUserManagement.Domain.Entities.Question", "Question")
+                        .WithMany("Answer")
+                        .HasForeignKey("QuestionId");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
                 {
                     b.HasOne("FavListUserManagement.Domain.Entities.Catergory", "Catergory_Id")
@@ -605,14 +618,20 @@ namespace FavListUserManagement.Infrastructure.Migrations
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.Question", b =>
                 {
                     b.HasOne("FavListUserManagement.Domain.Entities.Catergory", "Catergory")
-                        .WithMany()
+                        .WithMany("Question")
                         .HasForeignKey("CatergoryId");
+
+                    b.HasOne("FavListUserManagement.Domain.Entities.Sponsor", "Sponsor")
+                        .WithMany()
+                        .HasForeignKey("SponsorId");
 
                     b.HasOne("FavListUserManagement.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("Catergory");
+
+                    b.Navigation("Sponsor");
 
                     b.Navigation("User");
                 });
@@ -675,6 +694,16 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Catergory", b =>
+                {
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Question", b =>
+                {
+                    b.Navigation("Answer");
                 });
 #pragma warning restore 612, 618
         }

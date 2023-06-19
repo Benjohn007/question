@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FavListUserManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230609092424_roleAdded")]
-    partial class roleAdded
+    [Migration("20230616231954_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,52 @@ namespace FavListUserManagement.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Answer", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Created_By_Id")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modified_By")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Vote_Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Answers");
+                });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.Catergory", b =>
                 {
@@ -50,12 +96,20 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
                     b.Property<Guid>("Update_by_id")
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Catergories");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Catergorys");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
@@ -110,6 +164,77 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.HasIndex("Catergory_IdId");
 
                     b.ToTable("PortalFeatures");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Question", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CatergoryId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Created_By_Id")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Data_To_Post")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Days_To_Remain_Open")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Max_Answer_Count")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("MigratedToRedis")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("Min_Answer_Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Modified_By")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SponsorId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatergoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.QuestionDefaultParameter", b =>
@@ -210,6 +335,52 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.HasIndex("PortalFeatures_IdId");
 
                     b.ToTable("RoleFeatures");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Sponsor", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Ads_S3_Url")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Created_By_Id")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created_Date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("Is_Active")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Is_Deleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Last_Modified")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Last_update_date")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Logo_S3_Url")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Modified_By")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("Update_by_id")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sponsors");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.User", b =>
@@ -429,6 +600,15 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Catergory", b =>
+                {
+                    b.HasOne("FavListUserManagement.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.PortalFeature", b =>
                 {
                     b.HasOne("FavListUserManagement.Domain.Entities.Catergory", "Catergory_Id")
@@ -436,6 +616,21 @@ namespace FavListUserManagement.Infrastructure.Migrations
                         .HasForeignKey("Catergory_IdId");
 
                     b.Navigation("Catergory_Id");
+                });
+
+            modelBuilder.Entity("FavListUserManagement.Domain.Entities.Question", b =>
+                {
+                    b.HasOne("FavListUserManagement.Domain.Entities.Catergory", "Catergory")
+                        .WithMany()
+                        .HasForeignKey("CatergoryId");
+
+                    b.HasOne("FavListUserManagement.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Catergory");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.RoleFeature", b =>

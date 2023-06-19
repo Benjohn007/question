@@ -1,3 +1,4 @@
+using FavListUserManagement.Application;
 using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Application.Services;
 using FavListUserManagement.Application.Utilities;
@@ -36,10 +37,18 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITokenDetails, TokenDetails>();  
 builder.Services.AddScoped<IAuthenticationRepositotry, AuthenticationRepository>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICatergoryService, CatergoryService>();
+builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
+builder.Services.AddScoped<ISponsorRepository, SponsorRepository>();
+builder.Services.AddScoped<ISponsorService, SponsorService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
        .AddEntityFrameworkStores<ApplicationDbContext>()
        .AddDefaultTokenProviders();
+builder.Services.AddAutoMapper(typeof(MapInitializer));
 
 //Add email config
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
