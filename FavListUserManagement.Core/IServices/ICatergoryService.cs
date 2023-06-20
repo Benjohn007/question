@@ -10,6 +10,10 @@ namespace FavListUserManagement.Application.IServices
 {
     public interface ICatergoryService
     {
-        Task<Response<string>> Create(CatergoryDto catergory);
+        Task<Response<string>> Create(CategoryDto catergory);
+        Task<Response<List<CategoryDto>>> GetAll();
+        Task<Response<string>> DeleteCategory(string categoryId);
+        Task<Response<string>> UpdateCategory(string categoryId, UpdateCategoryDto categoryDto);
+        Task<Response<string>> GetById(string categoryId);
     }
 }

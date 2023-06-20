@@ -19,42 +19,27 @@ namespace FavListUserManagement.Application
             regMapper = new Mapper(regConfig);
 
             CreateMap<QuestionDto, Question>()
-            .ForMember(desc => desc.Answer,
-            opt => opt.Ignore());
+            .ForMember(desc => desc.Answer, opt => opt.Ignore());
 
             CreateMap<Question, Category>()
-                 .ForMember(desc => desc.Question,
-            opt => opt.Ignore());
+                 .ForMember(desc => desc.Question, opt => opt.Ignore());
 
-            CreateMap<CatergoryDto, Category>()
-                .ForMember(des => des.Question,
-                opt => opt.Ignore());
+            CreateMap<CategoryDto, Category>()
+                .ForMember(des => des.Question, opt => opt.Ignore());
+
             CreateMap<SponsorDto, Sponsor>();
             CreateMap<Question, QuestionResponseDto>()
-                .ForMember(des => des.Text,
-                opt => opt.UseDestinationValue());
-            CreateMap<UpdateQuestionDto, Question>();
+                .ForMember(des => des.Text,opt => opt.UseDestinationValue());
 
+            CreateMap<UpdateQuestionDto, Question>()
+                .ForMember(des => des.Answer, opt => opt.Ignore());
 
-            //  .ForMember(
-            //    dest => dest.UserId,
-            //    opt => opt.MapFrom(src => $"{src.UserId}")
-            //)
-            // .ForMember(
-            //    dest => dest.Text,
-            //    opt => opt.MapFrom(src => $"{src.Text}")
-            //)
-            // .ForMember(
-            //    dest => dest.Answer,
-            //    opt => opt.MapFrom(src => $"{src.Answer}")
-            //)
-            // .ForPath(
-            //    dest => dest.Catergory.CatergoryType,
-            //    opt => opt.MapFrom(src => $"{src.CatergoryType}")
-            //)
-            // .ForMember(
-            //    dest => dest.SponsorId,
-            //    opt => opt.MapFrom(src => $"{src.SponsorId}"));
+            CreateMap<Category, CategoryDto>();
+
+            CreateMap<UpdateCategoryDto, Category>()
+                .ForMember(des => des.Question, opt => opt.Ignore());
+
+             
         }
 
     }

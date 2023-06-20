@@ -10,7 +10,14 @@ namespace FavListUserManagement.Domain.DTO
     public class UpdateQuestionDto
     {
         public string? Text { get; set; }
-       // public ICollection<Answer>? Answer { get; set; }
+        public ICollection<AnswerRequestDto>? Answer { get; set; }
 
+    }
+
+    public class AnswerRequestDto
+    {
+        public string? Id { get; set; }
+        public string? Text { get; set; }
+        public int? Weight { get; set; }
     }
 }
