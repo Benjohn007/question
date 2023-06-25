@@ -28,6 +28,8 @@ namespace FavListUserManagement.Application
                 .ForMember(des => des.Question, opt => opt.Ignore());
 
             CreateMap<SponsorDto, Sponsor>();
+            CreateMap<Sponsor, SponsorDto>();
+
             CreateMap<Question, QuestionResponseDto>()
                 .ForMember(des => des.Text,opt => opt.UseDestinationValue());
 
@@ -36,8 +38,8 @@ namespace FavListUserManagement.Application
 
             CreateMap<Category, CategoryDto>();
 
-            CreateMap<UpdateCategoryDto, Category>()
-                .ForMember(des => des.Question, opt => opt.Ignore());
+            /*CreateMap<UpdateCategoryDto, Category>()
+                .ForMember(des => des.Question, opt => opt.Ignore());*/
 
              
         }

@@ -11,6 +11,9 @@ namespace FavListUserManagement.Application.IServices
     public interface ISponsorService
     {
         Task<Response<string>> Create(SponsorDto sponsor);
-
+        Task<Response<List<SponsorDto>>> GetAll();
+        Task<Response<string>> GetById(string categoryId);
+        Task<Response<string>> DeleteCategory(string categoryId);
+        Task<Response<string>> UpdateCategory(string sponsorId, SponsorDto sponsorDto);
     }
 }

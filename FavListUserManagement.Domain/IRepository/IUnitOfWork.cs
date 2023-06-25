@@ -15,6 +15,8 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         IQuestionRepository questionRepository { get; }
         ICategoryRepository catergoryRepository { get; }
         IAnswerRepository answerRepository { get; }
+        ISponsorRepository sponsorRepository { get; }
+        IQuestionDraftRepository questionDraftRepository { get; }
 
         Task SaveChanges();
 

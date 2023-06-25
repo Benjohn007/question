@@ -7,10 +7,15 @@ using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.DbContext;
 using FavListUserManagement.Infrastructure.Repository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+using Serilog.Sinks.MySQL;
+using System.Net;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -29,6 +34,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(GetConnectionString, ServerVersion.AutoDetect(GetConnectionString));
 });
 
+Log.Logger = new LoggerConfiguration().MinimumLevel.Error()
+    .WriteTo.File("Log/FavListLogs.txt", rollingInterval:RollingInterval.Hour).CreateLogger();
+builder.Host.UseSerilog();
+
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAdminService, AdminService>();
@@ -44,6 +54,8 @@ builder.Services.AddScoped<ICatergoryService, CatergoryService>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<ISponsorRepository, SponsorRepository>();
 builder.Services.AddScoped<ISponsorService, SponsorService>();
+builder.Services.AddScoped<IQuestionDraftRepository, QuestionDraftRepository>();
+builder.Services.AddScoped<IQuestionDraftService, QuestionDraftServive>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
        .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -86,6 +98,11 @@ builder.Services.AddSwaggerGen(c =>
     //c.IncludeXmlComments(Path.Combine(System.AppContext.BaseDirectory, "SwaggerAnnotation.xml"));
 });
 
+// using System.Net;
+//builder.Services.Configure<ForwardedHeadersOptions>(options =>
+//{
+//    options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+//});
 
 var app = builder.Build();
 
@@ -98,9 +115,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// using Microsoft.AspNetCore.HttpOverrides;
+
+//app.UseForwardedHeaders(new ForwardedHeadersOptions
+//{
+//    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+//});
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

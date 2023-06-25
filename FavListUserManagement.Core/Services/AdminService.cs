@@ -4,6 +4,7 @@ using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.GenericRepository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,27 +19,39 @@ namespace FavListUserManagement.Application.Services
     {
         private readonly IAdminRepository _adminRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<AdminService> _logger;
 
-        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork)
+        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork,ILogger<AdminService> logger)
         {
             _adminRepository = adminRepository;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<Response<string>> AddUserRole(string userId, UserRole role)
         {
-            var response = new Response<string>
+            try
             {
-                Succeeded = false,
-                StatusCode = (int)HttpStatusCode.NotFound,
-                Message = "User not found"
-            };
-            var result = await _adminRepository.AddUserRole(userId, role);
-            if (!result) return response;
+                _logger.LogInformation(userId, "Add user role", role);
+                var response = new Response<string>
+                {
+                    Succeeded = false,
+                    StatusCode = (int)HttpStatusCode.NotFound,
+                    Message = "User not found"
+                };
+                var result = await _adminRepository.AddUserRole(userId, role);
+                if (!result) return response;
 
-            response.Succeeded = true;
-            response.StatusCode = (int)HttpStatusCode.OK;
-            response.Message = "Role added successfully";
-            return response;
+                response.Succeeded = true;
+                response.StatusCode = (int)HttpStatusCode.OK;
+                response.Message = "Role added successfully";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "failed to add role");
+                throw;
+            }
+        
         }
 
         public async Task<Response<string>> CreateRole(RoleDto role)

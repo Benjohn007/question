@@ -22,6 +22,7 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         private ICategoryRepository? _catergoryRepository;
         private IAnswerRepository? _answerRepository;
         private ISponsorRepository? _sponsorRepository;
+        private IQuestionDraftRepository? _questionDraftRepository;
 
         public UnitOfWork(ApplicationDbContext applicationDb)
         {
@@ -41,6 +42,8 @@ namespace FavListUserManagement.Infrastructure.UnitOfWork
         public ISponsorRepository sponsorRepository =>
             _sponsorRepository ??= new SponsorRepository(_applicationDb);
 
+        public IQuestionDraftRepository questionDraftRepository => 
+            _questionDraftRepository ??= new QuestionDraftRepository(_applicationDb);
 
         public void BeginTransaction()
         {

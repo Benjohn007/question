@@ -3,6 +3,7 @@ using System;
 using FavListUserManagement.Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FavListUserManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230620165818_CategoryColor")]
+    partial class CategoryColor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,52 +283,6 @@ namespace FavListUserManagement.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuestionDefaultParameters");
-                });
-
-            modelBuilder.Entity("FavListUserManagement.Domain.Entities.QuestionDraft", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Answer")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CategoryId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Created_By_Id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Created_Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Is_Active")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("Is_Deleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("Last_Modified")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Last_update_date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Modified_By")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("Update_by_id")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuestionDrafts");
                 });
 
             modelBuilder.Entity("FavListUserManagement.Domain.Entities.RoleFeature", b =>

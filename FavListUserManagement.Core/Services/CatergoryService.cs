@@ -173,10 +173,8 @@ namespace FavListUserManagement.Application.Services
 
                 if (result != null)
                 {
-                    if (!string.IsNullOrEmpty(categoryDto.Name?.Trim()))
-                    {
-                        _mapper.Map(categoryDto, result);
-                    }
+                    result.Name = string.IsNullOrEmpty(categoryDto.Name) ? result.Name : categoryDto.Name;
+                    result.Colour = string.IsNullOrEmpty(categoryDto.Colour) ? result.Colour : categoryDto.Colour;
 
                     if (categoryDto.Question != null && categoryDto.Question.Any())
                     {

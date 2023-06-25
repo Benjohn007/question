@@ -1,15 +1,26 @@
 ﻿using AutoMapper;
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
 using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.DbContext;
+using FavListUserManagement.Infrastructure.Migrations;
 using FavListUserManagement.Infrastructure.Repository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
+using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Formats.Asn1;
+using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -142,7 +153,7 @@ namespace FavListUserManagement.Application.Services
 
                     response.Succeeded = true;
                     response.StatusCode = (int)HttpStatusCode.Created;
-                    response.Message = "Successfully registered";
+                    response.Message = "Successfully updated";
                     response.Data = "";
 
                     await _unitOfWork.SaveChanges();
@@ -153,16 +164,150 @@ namespace FavListUserManagement.Application.Services
 
                 response.Succeeded = false;
                 response.StatusCode = (int)HttpStatusCode.NotFound;
-                response.Message = "Failed to register, please change check the email, username and password.";
+                response.Message = "Failed to update.";
                 return response;
             }
 
             response.Succeeded = false;
             response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
-            response.Message = "Failed to register, please change check the email, username and password.";
+            response.Message = "Failed to update.";
             return response;
 
         }
 
+        public async Task<string> UpLoadExcel(IFormFile formFile)
+        {
+            string content;
+            await using (var memoryStream = new MemoryStream())
+            {
+                await formFile.CopyToAsync(memoryStream);
+                content = Convert.ToBase64String(memoryStream.ToArray());
+            }
+
+            List<QuestionUploadViewModel> records;
+            try
+            {
+                
+                using (var reader = new StreamReader(new MemoryStream(Convert.FromBase64String(content))))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        csv.Configuration.RegisterClassMap<QuestionUploadViewModelMap>();
+                        csv.Configuration.MissingFieldFound = null;
+                        csv.Configuration.BadDataFound = null;
+                        csv.Configuration.TrimOptions = TrimOptions.Trim;
+                        records = csv.GetRecords<QuestionUploadViewModel>().ToList();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            if (!records.Any())
+            {
+                //do nothing
+                //return success;
+            }
+
+            var categoriesToAdd = new List<Category>();
+
+            foreach (var item in records)
+            {
+                var isNewCategory = false;
+
+                var category = await _catergory.GetByIdAsync(x => x.Name.ToLower().Trim() == item.Category.ToLower().Trim());
+                if(category == null)
+                {
+                    category = new Category { Id = Guid.NewGuid().ToString(), Name = item.Category };
+                    isNewCategory = true;
+                }
+                else
+                {
+                    category.Question = await _questionRepository.GetAllAsync(x => x.CatergoryId == category.Id);
+                }
+                var answersText = item.Answer?.Trim().Split(',').ToList();
+                var answers = new List<Answer>();
+                answersText?.ForEach(x =>
+                {
+                    answers.Add(new Answer
+                    {
+                        Text = x
+                    });
+                });
+                var quest = new Question
+                {
+                    Text = item.Text,
+                    Answer = answers,
+                    CatergoryId = category.Id
+                };
+                if (category.Question != null)
+                {
+                    category.Question.Add(quest);
+                }
+                else
+                {
+                    category.Question = new List<Question>
+                    {
+                        quest
+                    };
+                }
+                if (isNewCategory)
+                {
+                    categoriesToAdd.Add(category);
+                }
+
+            }
+            if(categoriesToAdd.Any())
+                await _catergory.AddRangeAsync(categoriesToAdd);
+
+            await _unitOfWork.SaveChanges();
+            return "";
+        }
+
+
+    }
+
+    public class QuestionUploadViewModelMap : ClassMap<QuestionUploadViewModel>
+    {
+        public QuestionUploadViewModelMap()
+        {
+            Map(m => m.Text).Name("Text");
+            Map(m => m.Category).Name("Category");
+            Map(m => m.Sponsor).Name("Sponsor");
+            Map(m => m.Answer).Name("Answer");
+        }
+    }
+
+    public class QuestionUploadViewModel
+    {
+        [Order]
+        [Name("Text")]
+        public string Text { get; set; }
+
+        [Order]
+        [Name("Category")]
+        public string Category { get; set; }
+
+        [Order]
+        [Name("Sponsor")]
+        public string Sponsor { get; set; }
+
+        [Order]
+        [Name("Answer")]
+        public string Answer { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+    public sealed class OrderAttribute : Attribute
+    {
+        private readonly int _order;
+        public OrderAttribute([CallerLineNumber] int order = 0)
+        {
+            _order = order;
+        }
+
+        public int Order { get { return _order; } }
     }
 }

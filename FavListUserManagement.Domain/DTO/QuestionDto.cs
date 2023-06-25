@@ -14,4 +14,11 @@ namespace FavListUserManagement.Domain.DTO
         public string? CatergoryId { get; set; }
         public List<string>? Answer { get; set; } = new List<string>();
     }
+
+    public class QuestionDraftDto
+    {
+        public string? Text { get; set; }
+        public List<string>? Answer { get; set; }
+        public string CategoryId { get; set; }
+    }
 }

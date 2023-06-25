@@ -70,5 +70,21 @@ namespace FavListUserManagement.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("upload-excel-file")]
+        public async Task<IActionResult> UploadExcelFile(IFormFile formFile)
+        {
+            try
+            {
+                var result = await _service.UpLoadExcel(formFile);
+                return Ok(result); 
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

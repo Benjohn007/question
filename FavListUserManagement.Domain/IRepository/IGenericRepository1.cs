@@ -1,4 +1,5 @@
 ﻿using FavListUserManagement.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace FavListUserManagement.Infrastructure.GenericRepository
@@ -11,6 +12,8 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
         Task AddAsync(T entity);
 
         Task AddRangeAsync(IEnumerable<T> entities);
+
+        DbSet<T> GetContext();
 
         Task<bool> UpdateAsync(T Value, T entity);
         Task<bool> DeleteAsync(T Value);

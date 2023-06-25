@@ -89,5 +89,10 @@ namespace FavListUserManagement.Infrastructure.GenericRepository
         {
             await _dbSet.AddRangeAsync(entities);
         }
+
+        public DbSet<T> GetContext()
+        {
+            return _dbSet;
+        }
     }
 }

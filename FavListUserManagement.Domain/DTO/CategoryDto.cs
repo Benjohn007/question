@@ -10,13 +10,17 @@ namespace FavListUserManagement.Domain.DTO
     public class CategoryDto
     {
         public String? Name { get; set; }
-       // public ICollection<Question>? Question { get; set; }
+        public string? Colour { get; set; }
+
+        // public ICollection<Question>? Question { get; set; }
 
     }
 
     public class UpdateCategoryDto
     {
         public String? Name { get; set; }
+        public string? Colour { get; set; }
+
         public ICollection<QuestionRequestDto>? Question { get; set; }
 
     }

@@ -21,6 +21,7 @@ namespace FavListUserManagement.Infrastructure.DbContext
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<Sponsor>? Sponsors { get; set; }
+        public DbSet<QuestionDraft> QuestionDrafts { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder builder)
