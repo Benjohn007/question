@@ -57,6 +57,7 @@ namespace FavListUserManagement.Infrastructure.DbContext
                         break;
                     case EntityState.Added:
                         item.Entity.Id ??= Guid.NewGuid().ToString();
+                        item.Entity.Is_Active = true;
                         item.Entity.Created_Date = DateTime.UtcNow;
                         break;
                     default:

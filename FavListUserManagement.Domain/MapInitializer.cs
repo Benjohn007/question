@@ -40,8 +40,12 @@ namespace FavListUserManagement.Application
 
             /*CreateMap<UpdateCategoryDto, Category>()
                 .ForMember(des => des.Question, opt => opt.Ignore());*/
+            CreateMap<Question, QuestionSearchDto>();
 
-             
+            CreateMap<User, UserDto>();
+
+
+
         }
 
     }

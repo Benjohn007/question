@@ -5,6 +5,7 @@ using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.Repository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,8 @@ namespace FavListUserManagement.Application.Services
                     var mapp = new QuestionDraft
                     {
                         Text = question.Text,
-                        Answer = question.Answer != null ? string.Join(',', question.Answer) : string.Empty
+                        Answer = question.Answer != null ? string.Join(',', question.Answer) : string.Empty,
+                        CategoryId = (await _categoryRepository.GetByIdAsync(x => x.Id == question.CategoryId))?.Id,
                     };
 
                     await _questionDraftRepository.AddAsync(mapp);
@@ -89,6 +91,20 @@ namespace FavListUserManagement.Application.Services
                         {
                             result.Text = question.Text;
                         }
+
+                        if (!string.IsNullOrEmpty(question.CategoryId?.Trim()))
+                        {
+                            var category = await _categoryRepository.GetByIdAsync(x => x.Id == question.CategoryId);
+                            if(category == null)
+                            {
+                                //return error category can not be null
+                                response.Succeeded = false;
+                                response.StatusCode = (int)HttpStatusCode.NotFound;
+                                response.Message = "category can not be null";
+                                return response;
+                            }
+                            result.CategoryId = question.CategoryId;
+                        }
                         result.Answer = question.Answer != null ? string.Join(',', question.Answer) : string.Empty;
 
                         response.Succeeded = true;
@@ -128,13 +144,23 @@ namespace FavListUserManagement.Application.Services
             {
                 var response = new Response<string>();
 
-                var questionDraft = await _questionDraftRepository.GetAllAsync(x => question.Contains(x.Id) && !x.Is_Active);
+                var questionDraft = await (from draft in _questionDraftRepository.GetContext()
+                                           join c in _categoryRepository.GetContext() on draft.CategoryId equals c.Id
+                                           where 
+                                           question.Contains(draft.Id)
+                                           && draft.Is_Active
+                                           select new
+                                           {
+                                               draft.Text,
+                                               draft.Answer,
+                                               CategoryId = c.Id,
+                                           }).ToListAsync();
 
                 var questions = new List<Question>();
 
                 foreach (var item in questionDraft)
                 {
-                    if (string.IsNullOrEmpty(item.Id))
+                    if (string.IsNullOrEmpty(item.CategoryId))
                     {
                         //return error category can not be null
                         response.Succeeded = false;

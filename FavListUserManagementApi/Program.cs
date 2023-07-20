@@ -34,8 +34,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(GetConnectionString, ServerVersion.AutoDetect(GetConnectionString));
 });
 
-Log.Logger = new LoggerConfiguration().MinimumLevel.Error()
-    .WriteTo.File("Log/FavListLogs.txt", rollingInterval:RollingInterval.Hour).CreateLogger();
+
+configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
 builder.Host.UseSerilog();
 
 

@@ -18,4 +18,15 @@ namespace FavListUserManagement.Domain.DTO
 
 
     }
+
+    public class QuestionSearchDto
+    {
+        public string? Id { get; set; }
+        public string? CatergoryId { get; set; }
+        public string? Text { get; set; }
+        public ICollection<Answer>? Answer { get; set; }
+        public DateTime Data_To_Post { get; set; }
+        public string? SponsorId { get; set; }
+        public string? UserId { get; set; }
+    }
 }

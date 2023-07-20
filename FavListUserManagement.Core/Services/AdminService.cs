@@ -1,10 +1,12 @@
-﻿using FavListUserManagement.Application.IServices;
+﻿using AutoMapper;
+using FavListUserManagement.Application.IServices;
 using FavListUserManagement.Domain.DTO;
 using FavListUserManagement.Domain.Entities;
 using FavListUserManagement.Domain.IRepository;
 using FavListUserManagement.Infrastructure.GenericRepository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
 using Microsoft.Extensions.Logging;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +22,14 @@ namespace FavListUserManagement.Application.Services
         private readonly IAdminRepository _adminRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<AdminService> _logger;
+        private readonly IMapper _mapper;
 
-        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork,ILogger<AdminService> logger)
+        public AdminService(IAdminRepository adminRepository, IUnitOfWork unitOfWork,ILogger<AdminService> logger, IMapper mapper)
         {
             _adminRepository = adminRepository;
             _unitOfWork = unitOfWork;
             _logger = logger;
+            _mapper = mapper;
         }
         public async Task<Response<string>> AddUserRole(string userId, UserRole role)
         {
@@ -139,6 +143,37 @@ namespace FavListUserManagement.Application.Services
                 Message = result.ToString()
             };
 
+        }
+
+        public async Task<Response<UserDto>> GetAll()
+        {
+            try
+            {
+                var result = await _unitOfWork.userManagementRepository.GetAllAsync();
+                //var map = _mapper.Map<List<UserDto>>(result);
+                if (result == null)
+                {
+                    return new Response<UserDto>
+                    {
+                        Succeeded = false,
+                        StatusCode = (int)HttpStatusCode.NotFound,
+                        Message = "user not found"
+                    };
+                }
+                return new Response<UserDto>
+                {
+                    
+                    Data = (UserDto)result,
+                    Succeeded = true,
+                    StatusCode = (int)HttpStatusCode.OK,
+                    Message = result.ToString()
+                };
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }

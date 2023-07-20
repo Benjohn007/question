@@ -11,6 +11,7 @@ using FavListUserManagement.Infrastructure.Migrations;
 using FavListUserManagement.Infrastructure.Repository;
 using FavListUserManagement.Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,10 @@ namespace FavListUserManagement.Application.Services
         private readonly ICategoryRepository _catergory;
         private readonly ApplicationDbContext context;
         private readonly IAnswerRepository _answerRepository;
+        private readonly ILogger<QuestionService> _logger;
 
         public QuestionService(IQuestionRepository questionRepository,IMapper mapper,
-            IUnitOfWork unitOfWork,ICategoryRepository catergory, ApplicationDbContext context, IAnswerRepository answerRepository)
+            IUnitOfWork unitOfWork,ICategoryRepository catergory, ApplicationDbContext context, IAnswerRepository answerRepository,ILogger<QuestionService> logger)
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
@@ -44,45 +46,54 @@ namespace FavListUserManagement.Application.Services
             _catergory = catergory;
             this.context = context;
             _answerRepository = answerRepository;
+            _logger = logger;
         }
 
         public async Task<Response<string>> Create(QuestionDto question)
         {
-            var response = new Response<string>();
-            
-
-            if (question != null)
+            try
             {
-                var mapp = _mapper.Map<Question>(question);
-                mapp.Id = Guid.NewGuid().ToString();
+                var response = new Response<string>();
 
-                var answers = new List<Answer>();
-                question.Answer?.ForEach(x =>
+
+                if (question != null)
                 {
-                    answers.Add(new Answer
+                    var mapp = _mapper.Map<Question>(question);
+                    mapp.Id = Guid.NewGuid().ToString();
+
+                    var answers = new List<Answer>();
+                    question.Answer?.ForEach(x =>
                     {
-                        Text = x
+                        answers.Add(new Answer
+                        {
+                            Text = x
+                        });
                     });
-                });
-                mapp.Answer = answers;
+                    mapp.Answer = answers;
 
-                await _questionRepository.AddAsync(mapp);
-                 
-                response.Succeeded = true;
-                response.StatusCode = (int)HttpStatusCode.Created;
-                response.Message = "Successfully registered";
-                response.Data = "";
+                    await _questionRepository.AddAsync(mapp);
 
-                await _unitOfWork.SaveChanges();
+                    response.Succeeded = true;
+                    response.StatusCode = (int)HttpStatusCode.Created;
+                    response.Message = "Successfully registered";
+                    response.Data = "";
 
+                    await _unitOfWork.SaveChanges();
+
+                    return response;
+                }
+
+                response.Succeeded = false;
+                response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+                response.Message = "Failed to register, please change check the email, username and password.";
                 return response;
             }
-
-            response.Succeeded = false;
-            response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
-            response.Message = "Failed to register, please change check the email, username and password.";
-            return response;
-            
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }            
+           
         }
 
         
@@ -100,83 +111,107 @@ namespace FavListUserManagement.Application.Services
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
+                _logger.LogError(ex,ex.Message);
+                throw;
             }
         }
 
+        public async Task<Response<ICollection<QuestionResponseDto>>> GetAllQuestion()
+        {
+            try
+            {
+                var questions = await _questionRepository.GetAllAsync();
+                var map =_mapper.Map<ICollection<QuestionResponseDto>>(questions);
+                return Response<ICollection<QuestionResponseDto>>.Success("", map, 200);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public async Task<Response<string>> Update(string questionId, UpdateQuestionDto question)
         {
-            var response = new Response<string>();
-
-
-            if (questionId != null)
+            try
             {
-                var result = await _questionRepository.GetByIdAsync(x => x.Id == questionId);
+                var response = new Response<string>();
 
-                if(result != null)
+
+                if (questionId != null)
                 {
-                    if (!string.IsNullOrEmpty(question.Text?.Trim()))
-                    {
-                        _mapper.Map(question, result);
-                    }
-                     
-                    if (question.Answer != null && question.Answer.Any())
-                    {
-                        foreach(var answer in question.Answer)
-                        {
-                            if (!string.IsNullOrEmpty(answer.Id))
-                            {
-                                var answerFromDb = await _answerRepository.GetByIdAsync(y => y.Id == answer.Id);
-                                if (answerFromDb != null)
-                                {
-                                    answerFromDb.Text = answer.Text ?? answerFromDb.Text;
-                                    answerFromDb.Weight = answer.Weight ?? answerFromDb.Weight;
-                                }   
-                            }
-                            else
-                            {
-                                //create a new answer and add to question
-                                var newAnswer = new Answer
-                                {
-                                    Text = answer.Text,
-                                    QuestionId = result.Id,
-                                    Weight = answer.Weight ?? 0
-                                };
+                    var result = await _questionRepository.GetByIdAsync(x => x.Id == questionId);
 
-                                await _answerRepository.AddAsync(newAnswer);
+                    if (result != null)
+                    {
+                        if (!string.IsNullOrEmpty(question.Text?.Trim()))
+                        {
+                            _mapper.Map(question, result);
+                        }
+
+                        if (question.Answer != null && question.Answer.Any())
+                        {
+                            foreach (var answer in question.Answer)
+                            {
+                                if (!string.IsNullOrEmpty(answer.Id))
+                                {
+                                    var answerFromDb = await _answerRepository.GetByIdAsync(y => y.Id == answer.Id);
+                                    if (answerFromDb != null)
+                                    {
+                                        answerFromDb.Text = answer.Text ?? answerFromDb.Text;
+                                        answerFromDb.Weight = answer.Weight ?? answerFromDb.Weight;
+                                    }
+                                }
+                                else
+                                {
+                                    //create a new answer and add to question
+                                    var newAnswer = new Answer
+                                    {
+                                        Text = answer.Text,
+                                        QuestionId = result.Id,
+                                        Weight = answer.Weight ?? 0
+                                    };
+
+                                    await _answerRepository.AddAsync(newAnswer);
+                                }
                             }
                         }
+
+                        //await _questionRepository.UpdateAsync(result,question);
+
+                        response.Succeeded = true;
+                        response.StatusCode = (int)HttpStatusCode.Created;
+                        response.Message = "Successfully updated";
+                        response.Data = "";
+
+                        await _unitOfWork.SaveChanges();
+
+                        return response;
+
                     }
 
-                    //await _questionRepository.UpdateAsync(result,question);
-
-                    response.Succeeded = true;
-                    response.StatusCode = (int)HttpStatusCode.Created;
-                    response.Message = "Successfully updated";
-                    response.Data = "";
-
-                    await _unitOfWork.SaveChanges();
-
+                    response.Succeeded = false;
+                    response.StatusCode = (int)HttpStatusCode.NotFound;
+                    response.Message = "Failed to update.";
                     return response;
-
                 }
 
                 response.Succeeded = false;
-                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
                 response.Message = "Failed to update.";
                 return response;
+
             }
-
-            response.Succeeded = false;
-            response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
-            response.Message = "Failed to update.";
-            return response;
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,ex.Message);
+                throw;
+            }
+           
         }
 
         public async Task<string> UpLoadExcel(IFormFile formFile)
         {
+        
             string content;
             await using (var memoryStream = new MemoryStream())
             {
@@ -200,73 +235,121 @@ namespace FavListUserManagement.Application.Services
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                _logger.LogError(ex, ex.Message);
+
+                throw;
             }
-
-            if (!records.Any())
+            try
             {
-                //do nothing
-                //return success;
-            }
-
-            var categoriesToAdd = new List<Category>();
-
-            foreach (var item in records)
-            {
-                var isNewCategory = false;
-
-                var category = await _catergory.GetByIdAsync(x => x.Name.ToLower().Trim() == item.Category.ToLower().Trim());
-                if(category == null)
+                if (!records.Any())
                 {
-                    category = new Category { Id = Guid.NewGuid().ToString(), Name = item.Category };
-                    isNewCategory = true;
+                    //do nothing
+                    //return success;
                 }
-                else
+
+                var categoriesToAdd = new List<Category>();
+
+                foreach (var item in records)
                 {
-                    category.Question = await _questionRepository.GetAllAsync(x => x.CatergoryId == category.Id);
-                }
-                var answersText = item.Answer?.Trim().Split(',').ToList();
-                var answers = new List<Answer>();
-                answersText?.ForEach(x =>
-                {
-                    answers.Add(new Answer
+                    var isNewCategory = false;
+
+                    var category = await _catergory.GetByIdAsync(x => x.Name.ToLower().Trim() == item.Category.ToLower().Trim());
+                    if (category == null)
                     {
-                        Text = x
+                        category = new Category { Id = Guid.NewGuid().ToString(), Name = item.Category };
+                        isNewCategory = true;
+                    }
+                    else
+                    {
+                        category.Question = await _questionRepository.GetAllAsync(x => x.CatergoryId == category.Id);
+                    }
+                    var answersText = item.Answer?.Trim().Split(',').ToList();
+                    var answers = new List<Answer>();
+                    answersText?.ForEach(x =>
+                    {
+                        answers.Add(new Answer
+                        {
+                            Text = x
+                        });
                     });
-                });
-                var quest = new Question
-                {
-                    Text = item.Text,
-                    Answer = answers,
-                    CatergoryId = category.Id
-                };
-                if (category.Question != null)
-                {
-                    category.Question.Add(quest);
-                }
-                else
-                {
-                    category.Question = new List<Question>
+                    var quest = new Question
+                    {
+                        Text = item.Text,
+                        Answer = answers,
+                        CatergoryId = category.Id
+                    };
+                    if (category.Question != null)
+                    {
+                        category.Question.Add(quest);
+                    }
+                    else
+                    {
+                        category.Question = new List<Question>
                     {
                         quest
                     };
-                }
-                if (isNewCategory)
-                {
-                    categoriesToAdd.Add(category);
-                }
+                    }
+                    if (isNewCategory)
+                    {
+                        categoriesToAdd.Add(category);
+                    }
 
+                }
+                if (categoriesToAdd.Any())
+                    await _catergory.AddRangeAsync(categoriesToAdd);
+
+                await _unitOfWork.SaveChanges();
+                return "";
             }
-            if(categoriesToAdd.Any())
-                await _catergory.AddRangeAsync(categoriesToAdd);
-
-            await _unitOfWork.SaveChanges();
-            return "";
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
+           
         }
 
+        public async Task<Response<List<QuestionSearchDto>>> QuestionSearch(string search)
+        {
+            var response = new Response<List<QuestionSearchDto>>();
+            search = string.IsNullOrEmpty(search) ? "" : search.ToLower().Trim();
+            var result = await _questionRepository.GetAllAsync(x =>x.Text == search);
+            var mapp = _mapper.Map<List<QuestionSearchDto>>(result);
 
+            return Response<List<QuestionSearchDto>>.Success("", mapp, 200);
+           
+        }
+        public async Task<Response<string>> DeleteQuestion(string questionId)
+        {
+            try
+            {
+                var response = new Response<string>();
+                var question = await _questionRepository.GetByIdAsync(x => x.Id == questionId);
+
+                if (question != null)
+                {
+                    question.Is_Deleted = true;
+                    response.Data = question.Text;
+                    response.Succeeded = true;
+                    response.StatusCode = (int)HttpStatusCode.NoContent;
+                    response.Message = "Successfully deleted";
+                    await _unitOfWork.SaveChanges();
+                    return response;
+                }
+                response.Succeeded = false;
+                response.StatusCode = (int)HttpStatusCode.NotFound;
+                response.Message = "failed. user not found";
+                return response;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
 
     public class QuestionUploadViewModelMap : ClassMap<QuestionUploadViewModel>

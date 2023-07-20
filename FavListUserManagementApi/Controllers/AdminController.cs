@@ -19,7 +19,7 @@ namespace FavListUserManagement.Api.Controllers
         }
 
         [Authorize(Roles = "SuperAdmin")]
-        [HttpPost("Create-role")]
+        [HttpPost("create-role")]
         public async Task<IActionResult> CreateRole(RoleDto role)
         {
             try
@@ -36,7 +36,7 @@ namespace FavListUserManagement.Api.Controllers
            
         }
 
-        [HttpPost("Add-user-role/{userId}")]
+        [HttpPost("add-user-role/{userId}")]
         public async Task<IActionResult> AddUserRole(string userId, UserRole roles)
         {
             try
@@ -52,7 +52,7 @@ namespace FavListUserManagement.Api.Controllers
             }
          
         }
-        [HttpPost("Remove-user-role/{userId}")]
+        [HttpPost("remove-user-role/{userId}")]
         public async Task<IActionResult> RemoveUserRole(string userId, UserRole roles)
         {
             try
@@ -69,7 +69,21 @@ namespace FavListUserManagement.Api.Controllers
         
         }
 
-        [HttpGet("Get-User-By-Id")]
+        [HttpGet("get-all-user")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var user = await _adminService.GetAll();
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("get-user-by-id")]
         public async Task<IActionResult> GetUserById(string userId)
         {
             try
@@ -85,7 +99,7 @@ namespace FavListUserManagement.Api.Controllers
             }
         }
 
-        [HttpDelete("Remove-User")]
+        [HttpDelete("remove-user")]
         public async Task<IActionResult> RemoveUser(string userId)
         {
             try

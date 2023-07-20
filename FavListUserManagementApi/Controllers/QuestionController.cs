@@ -40,7 +40,7 @@ namespace FavListUserManagement.Api.Controllers
             }
         }
         [HttpGet]
-        [Route("get-question")]
+        [Route("get-question-by-category")]
         public async Task<IActionResult> GetQuestion(string? category)
         {
             try
@@ -53,7 +53,20 @@ namespace FavListUserManagement.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpGet]
+        [Route("get-all-questions")]
+        public async Task<IActionResult> GetAllQuestion()
+        {
+            try
+            {
+                var reslut = _service.GetAllQuestion();
+                return Ok(reslut);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPut]
         [Route("update-question")]
         public async Task<IActionResult> Update(string questionId, UpdateQuestionDto question)
@@ -79,6 +92,38 @@ namespace FavListUserManagement.Api.Controllers
             {
                 var result = await _service.UpLoadExcel(formFile);
                 return Ok(result); 
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public async Task<IActionResult> QuestionSearch(string search)
+        {
+            try
+            {
+                var result = await _service.QuestionSearch(search);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("delete-question")]
+        public async Task<IActionResult> Delete(string questionId)
+        {
+            try
+            {
+                var del = await _service.DeleteQuestion(questionId);
+                return Ok(del);
             }
             catch (Exception ex)
             {
